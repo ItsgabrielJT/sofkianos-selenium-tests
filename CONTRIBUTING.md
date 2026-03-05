@@ -41,7 +41,7 @@
 ## Tests
 
 Antes de enviar tu PR, asegúrate de que:
-- ✅ Todos los tests pasan (`mvn clean test`)
+- ✅ Todos los tests pasan (`gradle clean test`)
 - ✅ No hay errores de compilación
 - ✅ El código está formateado correctamente
 - ✅ Has agregado tests para tu nueva funcionalidad
@@ -52,7 +52,7 @@ Si encuentras un bug o tienes una sugerencia:
 1. Verifica que no exista un issue similar
 2. Abre un nuevo issue con una descripción clara
 3. Incluye pasos para reproducir el problema
-4. Incluye la versión de Java, Maven y navegador que estás usando
+4. Incluye la versión de Java, Gradle y navegador que estás usando
 
 ## Preguntas
 

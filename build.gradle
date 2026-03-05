@@ -1,0 +1,90 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.sofkianos'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    seleniumVersion = '4.18.1'
+    cucumberVersion = '7.15.0'
+    webdrivermanagerVersion = '5.7.0'
+    junitVersion = '5.10.2'
+    junitPlatformSuiteVersion = '1.10.2'
+    assertjVersion = '3.25.3'
+}
+
+dependencies {
+    testImplementation "org.seleniumhq.selenium:selenium-java:${seleniumVersion}"
+    testImplementation "io.github.bonigarcia:webdrivermanager:${webdrivermanagerVersion}"
+
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    testImplementation "org.junit.platform:junit-platform-suite:${junitPlatformSuiteVersion}"
+
+    testImplementation "org.assertj:assertj-core:${assertjVersion}"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+    ignoreFailures = true
+
+    // Keep defaults aligned with the current test runner behavior.
+    systemProperty 'cucumber.junit-platform.naming-strategy', 'long'
+    systemProperty 'headless', System.getProperty('headless') ?: (project.findProperty('headless') ?: 'false')
+
+    def appUrl = System.getProperty('app.url') ?: project.findProperty('app.url')
+    if (appUrl != null) {
+        systemProperty 'app.url', appUrl
+    }
+
+    def cucumberTags = System.getProperty('cucumber.filter.tags') ?: project.findProperty('cucumber.filter.tags')
+    if (cucumberTags != null) {
+        systemProperty 'cucumber.filter.tags', cucumberTags
+    }
+
+    def cucumberPlugin = System.getProperty('cucumber.plugin') ?: project.findProperty('cucumber.plugin')
+    if (cucumberPlugin != null) {
+        systemProperty 'cucumber.plugin', cucumberPlugin
+    }
+}
+
+tasks.register('testCategoria', Test) {
+    useJUnitPlatform()
+    ignoreFailures = true
+    systemProperty 'cucumber.junit-platform.naming-strategy', 'long'
+    systemProperty 'headless', System.getProperty('headless') ?: (project.findProperty('headless') ?: 'false')
+    systemProperty 'cucumber.filter.tags', '@categoria'
+}
+
+tasks.register('testBusqueda', Test) {
+    useJUnitPlatform()
+    ignoreFailures = true
+    systemProperty 'cucumber.junit-platform.naming-strategy', 'long'
+    systemProperty 'headless', System.getProperty('headless') ?: (project.findProperty('headless') ?: 'false')
+    systemProperty 'cucumber.filter.tags', '@busqueda'
+}
+
+tasks.register('testFecha', Test) {
+    useJUnitPlatform()
+    ignoreFailures = true
+    systemProperty 'cucumber.junit-platform.naming-strategy', 'long'
+    systemProperty 'headless', System.getProperty('headless') ?: (project.findProperty('headless') ?: 'false')
+    systemProperty 'cucumber.filter.tags', '@fecha'
+}

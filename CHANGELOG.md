@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 - Configuration management with TestConfig
 - Thread-safe WebDriver management with DriverManager
 - Screenshot capture on test failure
-- Maven project configuration with:
+- Gradle project configuration with:
   - Selenium WebDriver 4.18.1
   - Cucumber 7.15.0
   - JUnit 5.10.2

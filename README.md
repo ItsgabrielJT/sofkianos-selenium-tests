@@ -11,7 +11,7 @@
   - [3.4 Ejemplos Prácticos en el Proyecto](#34-ejemplos-prácticos-en-el-proyecto)
   - [3.5 XPaths Complejos con ayuda de IA](#35-xpaths-complejos-con-ayuda-de-ia)
   - [3.6 Cuándo usar cada Localizador](#36-cuándo-usar-cada-localizador)
-- [4. Page Object Model (POM)](#4-page-object-model-pom)
+- [4. Page Object Model](#4-page-object-model)
 - [5. Cucumber y Gherkin](#5-cucumber-y-gherkin)
 - [6. Flujo Completo: Del Feature al Localizador](#6-flujo-completo-del-feature-al-localizador)
 - [7. Ejecución](#7-ejecución)
@@ -35,7 +35,8 @@ Proyecto de pruebas automatizadas con **Selenium WebDriver**, **Cucumber** y **J
 
 ```
 selenium/
-├── pom.xml
+├── build.gradle
+├── settings.gradle
 └── src/
     └── test/
         ├── java/com/sofkianos/
@@ -449,18 +450,18 @@ public boolean isKudoVisible(String sender, String receiver, String category) {
 
 ---
 
-## 4. Page Object Model (POM)
+## 4. Page Object Model
 
-### ¿Qué es POM?
+### ¿Qué es este patrón?
 
 Es un patrón de diseño que crea una **clase Java por cada página** de la aplicación. Cada clase encapsula:
 - Los **localizadores** de los elementos de esa página
 - Los **métodos** para interactuar con esos elementos
 
-### ¿Por qué POM?
+### ¿Por qué usar este patrón?
 
 ```
-SIN POM (frágil):                          CON POM (mantenible):
+SIN patrón (frágil):                      CON patrón (mantenible):
 ─────────────────                          ────────────────────
 @When("busco kudos")                       @When("busco kudos")
 public void busco() {                      public void busco() {
@@ -475,7 +476,7 @@ public void busco() {                      public void busco() {
 // EN TODOS los steps que lo usen 😱
 ```
 
-### Estructura POM del proyecto
+### Estructura del patrón en el proyecto
 
 ```java
 // BasePage.java — Métodos comunes reutilizables
@@ -604,40 +605,39 @@ public String getCounterText() {
 ### Prerrequisitos
 
 - Java 17+
-- Maven 3.8+
+- Gradle 8+ (opcional, para ejecutar con Gradle)
 - Chrome o Firefox instalado
 - La aplicación corriendo en `http://0.0.0.0:5173`
 
 ### Comandos
 
 ```bash
-# Navegar al directorio del proyecto
-cd selenium
+# Gradle: ejecutar todos los tests
+gradle clean test
 
-# Ejecutar todos los tests
-mvn clean test
+# Gradle: ejecutar en modo headless
+gradle clean test -Dheadless=true
 
-# Ejecutar en modo headless (sin abrir navegador visible)
-mvn clean test -Dheadless=true
+# Gradle: ejecutar por tags
+gradle clean test -Dcucumber.filter.tags="@categoria"
+gradle clean test -Dcucumber.filter.tags="@busqueda"
+gradle clean test -Dcucumber.filter.tags="@fecha"
 
-# Ejecutar solo tests de categoría
-mvn clean test -Dcucumber.filter.tags="@categoria"
+# Gradle: tareas auxiliares por tipo
+gradle testCategoria
+gradle testBusqueda
+gradle testFecha
 
-# Ejecutar solo tests de búsqueda
-mvn clean test -Dcucumber.filter.tags="@busqueda"
-
-# Ejecutar solo tests de fecha
-mvn clean test -Dcucumber.filter.tags="@fecha"
-
-# Generar reporte HTML
-mvn clean test -Dcucumber.plugin="html:target/cucumber-report.html"
+# Gradle: reporte HTML personalizado
+gradle clean test -Dcucumber.plugin="html:target/cucumber-report.html"
 ```
 
 ### Reportes
 
 Después de la ejecución, los reportes se encuentran en:
-- `target/cucumber-report.html` — Reporte HTML de Cucumber
-- `target/surefire-reports/` — Reportes de JUnit
+- `target/cucumber-reports/cucumber.html` — Reporte HTML de Cucumber
+- `target/cucumber-reports/cucumber.json` — Reporte JSON de Cucumber
+- `build/reports/tests/test/index.html` — Reporte de tests cuando ejecutas con Gradle
 
 ---
 

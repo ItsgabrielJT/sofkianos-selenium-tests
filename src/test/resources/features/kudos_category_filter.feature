@@ -22,7 +22,7 @@ Característica: Filtrado por Categoría de Kudos
     Entonces la categoría seleccionada debe ser "Todas las categorías"
 
   @categoria
-  Escenario Outline: Filtrar por categoría específica
+  Esquema del escenario: Filtrar por categoría específica
     Cuando selecciono la categoría "<categoria>"
     Y aplico los filtros
     Entonces el contador debe reflejar los resultados de la búsqueda

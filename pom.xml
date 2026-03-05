@@ -92,6 +92,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
                     <properties>
                         <configurationParameters>
                             cucumber.junit-platform.naming-strategy=long

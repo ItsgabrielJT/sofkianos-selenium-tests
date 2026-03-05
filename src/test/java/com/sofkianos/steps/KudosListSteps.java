@@ -55,8 +55,9 @@ public class KudosListSteps {
 
     @Entonces("la tabla debe tener las columnas {string}")
     public void laTablaDebeTenerLasColumnas(String expectedColumns) {
-        List<String> headers = kudosListPage.getTableHeaderTexts();
-        String[] expected = expectedColumns.split(",\\s*");
+        List<String> headers = kudosListPage.getTableHeaderTexts().stream().map(String::toUpperCase).toList();
+        String[] expected = java.util.Arrays.stream(expectedColumns.split(",\\s*")).map(String::toUpperCase)
+                .toArray(String[]::new);
         assertThat(headers)
                 .as("Los encabezados de la tabla")
                 .containsExactlyInAnyOrder(expected);

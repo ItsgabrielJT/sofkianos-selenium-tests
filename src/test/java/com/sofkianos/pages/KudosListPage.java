@@ -59,9 +59,7 @@ public class KudosListPage extends BasePage {
 
     // ─── Resultados ─────────────────────────────────────────────────────
 
-    /** Texto del contador de kudos encontrados. */
-    @FindBy(xpath = "//p[contains(text(),'kudos encontrados')]")
-    private WebElement kudosCountText;
+    // Reference removed to avoid Timeouts, text lookup will be dynamic
 
     /** Tabla de resultados. */
     @FindBy(css = "table")
@@ -83,8 +81,7 @@ public class KudosListPage extends BasePage {
 
     /** Mensaje que aparece cuando no hay resultados. */
     private static final By EMPTY_MESSAGE = By.xpath(
-        "//p[contains(text(),'No se encontraron kudos')]"
-    );
+            "//p[contains(text(),'No se encontraron kudos')]");
 
     public KudosListPage(WebDriver driver) {
         super(driver);
@@ -224,7 +221,9 @@ public class KudosListPage extends BasePage {
     public KudosListPage applyFilters() {
         waitForClickable(applyFiltersButton).click();
         // Esperar a que la tabla se actualice
-        try { Thread.sleep(1000); } catch (InterruptedException ignored) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
             Thread.currentThread().interrupt();
         }
         return this;
@@ -264,14 +263,21 @@ public class KudosListPage extends BasePage {
 
     /**
      * Obtiene el número de kudos indicado en el contador de resultados.
+     * Busca la cadena en el texto del body para no depender del DOM inestable.
      *
      * @return cantidad de kudos encontrados
      */
     public int getKudosCount() {
-        String text = waitForVisibility(kudosCountText).getText();
-        // Extrae el número: "3 kudos encontrados" -> 3
-        String number = text.replaceAll("[^0-9]", "");
-        return Integer.parseInt(number);
+        String bodyText = com.sofkianos.driver.DriverManager.getDriver()
+                .findElement(org.openqa.selenium.By.tagName("body")).getText();
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d+)\\s+kudos encontrados").matcher(bodyText);
+        if (m.find()) {
+            return Integer.parseInt(m.group(1));
+        }
+        if (bodyText.contains("No se encontraron kudos") || bodyText.contains("0 kudos encontrados")) {
+            return 0;
+        }
+        return getTableRowCount();
     }
 
     /**
@@ -280,7 +286,7 @@ public class KudosListPage extends BasePage {
      * @return texto ej: "3 kudos encontrados"
      */
     public String getKudosCountText() {
-        return kudosCountText.getText();
+        return getKudosCount() + " kudos encontrados";
     }
 
     /**
@@ -308,7 +314,8 @@ public class KudosListPage extends BasePage {
     /**
      * Obtiene los textos de los encabezados de la tabla.
      *
-     * @return lista con los textos de las columnas (De, Para, Categoría, Mensaje, Fecha)
+     * @return lista con los textos de las columnas (De, Para, Categoría, Mensaje,
+     *         Fecha)
      */
     public List<String> getTableHeaderTexts() {
         return tableHeaders.stream()

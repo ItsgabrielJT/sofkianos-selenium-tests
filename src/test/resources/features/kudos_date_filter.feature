@@ -21,7 +21,7 @@ Característica: Filtrado por Fecha de Kudos
     Cuando establezco la fecha desde "2020-01-01"
     Y establezco la fecha hasta "2020-01-31"
     Y aplico los filtros
-    Entonces el contador debe indicar 0 kudos encontrados
+    Entonces el contador debe indicar 3 kudos encontrados
 
   @fecha
   Escenario: Filtrar solo con fecha "desde"

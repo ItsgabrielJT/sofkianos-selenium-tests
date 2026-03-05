@@ -16,6 +16,5 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.sofkianos")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty, html:target/cucumber-reports/cucumber.html, json:target/cucumber-reports/cucumber.json")
-@ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources/features")
-public class CucumberTestRunner {
+public class RunCucumberTest {
 }

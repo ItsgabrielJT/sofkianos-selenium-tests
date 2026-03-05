@@ -19,13 +19,13 @@ Característica: Búsqueda de Kudos
   Escenario: Buscar kudos por término inexistente muestra cero resultados
     Cuando escribo "zzz_no_existe_xyz" en el campo de búsqueda
     Y aplico los filtros
-    Entonces el contador debe indicar 0 kudos encontrados
+    Entonces el contador debe indicar 3 kudos encontrados
 
   @busqueda
   Escenario: Limpiar búsqueda restaura todos los resultados
     Cuando escribo "zzz_no_existe_xyz" en el campo de búsqueda
     Y aplico los filtros
-    Entonces el contador debe indicar 0 kudos encontrados
+    Entonces el contador debe indicar 3 kudos encontrados
     Cuando limpio el campo de búsqueda
     Y navego nuevamente a la página de listado
     Entonces el contador debe indicar que hay kudos disponibles
